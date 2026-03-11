@@ -1,0 +1,25 @@
+name: Auto-rebuild image on base change
+
+on:
+  schedule:
+    - cron:  '26 17 * * *'
+  workflow_dispatch:
+
+jobs:
+  check-base-image-update:
+    runs-on: ubuntu-latest
+    outputs:
+      needs-updating: ${{ steps.check.outputs.needs-updating }}
+    steps:
+      - name: Check if update available
+        id: check
+        uses: lucacome/docker-image-update-checker@03e3f8ff4b69a3bf845e2f6b56f0e0b0ad7e1d1e
+        with:
+          base-image: docker.io/php:8.2-fpm
+          image: ghcr.io/cog-creators/cog-browser
+
+  rebuild:
+    name: Rebuild image with new base and deploy
+    needs: check-base-image-update
+    if: needs.check-base-image-update.outputs.needs-updating == 'true'
+    uses: ./.github/workflows/deploy.yaml
