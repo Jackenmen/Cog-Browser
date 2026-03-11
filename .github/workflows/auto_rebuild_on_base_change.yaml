@@ -23,3 +23,5 @@ jobs:
     needs: check-base-image-update
     if: needs.check-base-image-update.outputs.needs-updating == 'true'
     uses: ./.github/workflows/deploy.yaml
+    permissions:
+      packages: write
