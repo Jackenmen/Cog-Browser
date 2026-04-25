@@ -162,8 +162,8 @@ class Repo
 				approved_at: getNullableDateTime($data, 'rx_approved_at'),
 				branch: $data['rx_branch'] ?? '',
 			);
-		} catch (TypeError) {
-			throw new ValueError('Expected ');
+		} catch (TypeError $e) {
+			throw new ValueError("TypeError occurred while parsing: " . $e -> getMessage());
 		}
 		foreach ($data['rx_cogs'] ?? [] as $cogName => $cogData) {
 			$repo->cogs[] = Cog::fromArray($repo, $cogName, $cogData);
@@ -334,7 +334,8 @@ foreach ($json as $source => $sourceData) {
 	$repo_url = explode('@', $source, 2)[0];
 	try {
 		$repo = Repo::fromArray($repo_url, $sourceData);
-	} catch (ValueError) {
+	} catch (ValueError $e) {
+		error_log("Failed to parse repo " . $repo_url . ": " . $e->getMessage());
 		continue;
 	}
 	if ($repo->category === RepoCategory::Unapproved && !$show_ua) {
