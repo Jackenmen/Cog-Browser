@@ -228,6 +228,7 @@ class Cog
 				$this->allRequirements[] = 'Bot<=' . $this->maxBotVersion;
 			}
 		}
+		array_push($this->allRequirements, ...$requirements);
 		foreach ($tags as $tagName) {
 			$this->tags[] = strtolower($tagName);
 		}

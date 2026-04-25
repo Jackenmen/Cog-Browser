@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   app:
     image: ghcr.io/cog-creators/cog-browser:latest
