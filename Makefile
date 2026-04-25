@@ -1,2 +1,2 @@
 serve:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+	docker compose -f compose.yaml -f compose.dev.yaml up --build
